@@ -7,9 +7,49 @@
 </head>
 <body>
 
-    <h1></h1>
-    
-    <script src="index.js"></script>
+    <form id="loginForm" method="post">
+        <input type="text" id="username" placeholder="username">
+        <input type="text" id="password" placeholder="password">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h1>Status Code</h1>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const status_code = document.querySelector("h1")
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const user_data = {
+                username: username,
+                password: password
+            }
+
+            const ngrokUrl = "https://2ab607cfab14.ngrok-free.app";
+
+            fetch(ngrokUrl, {
+                method: 'POST',
+                body: JSON.stringify(user_data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                status_code.textContent = `Status Code: ${data.status_code}`
+
+                // console.log("Ответ сервера:", data);
+                // alert("Успех! Ответ: " + data.msg);
+            })
+            .catch(error => {
+                console.error("Ошибка:", error);
+            });
+        })
+    </script>
 
 </body>
 </html>
